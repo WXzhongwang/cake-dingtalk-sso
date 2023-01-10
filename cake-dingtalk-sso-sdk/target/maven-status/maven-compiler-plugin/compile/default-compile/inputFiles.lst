@@ -1,10 +1,13 @@
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/properties/JedisConfig.java
+/Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/beans/CookieSessionModel.java
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/properties/AjaxFailureResponse.java
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/utils/JedisUtil.java
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/properties/SsoConfigProperties.java
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/filter/SsoTokenFilter.java
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/filter/SsoAuthenticationFilter.java
+/Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/beans/ResponseCodeEnum.java
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/filter/SsoWebFilter.java
+/Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/beans/TokenAuthenticationException.java
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/utils/BASE64Util.java
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/result/ReturnT.java
 /Users/tutu/workspace/cake-dingtalk-sso/cake-dingtalk-sso-sdk/src/main/java/com/rany/cake/dingtalk/sdk/utils/JwtUtil.java

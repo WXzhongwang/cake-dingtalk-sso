@@ -6,8 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="cake-dingtalk-sso-client" />
         <module name="cake-dingtalk-sso-sdk" />
+        <module name="cake-dingtalk-sso-starter" />
+        <module name="cake-dingtalk-sso-client" />
         <module name="cake-dingtalk-sso-server" />
       </profile>
     </annotationProcessing>

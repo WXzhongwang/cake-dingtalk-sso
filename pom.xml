@@ -9,10 +9,10 @@
     <version>1.0-SNAPSHOT</version>
     <name>cake-dingtalk-sso</name>
     <modules>
-
         <module>cake-dingtalk-sso-client</module>
         <module>cake-dingtalk-sso-sdk</module>
         <module>cake-dingtalk-sso-server</module>
+        <module>cake-dingtalk-sso-starter</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -177,6 +177,18 @@
                 <groupId>dom4j</groupId>
                 <artifactId>dom4j</artifactId>
                 <version>${dom4j.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.rany.cake.dingtalk.sso</groupId>
+                <artifactId>cake-dingtalk-sso-sdk</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rany.cake.dingtalk.sso</groupId>
+                <artifactId>cake-dingtalk-sso-starter</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

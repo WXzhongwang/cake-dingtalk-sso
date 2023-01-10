@@ -1,0 +1,53 @@
+server:
+  port: 8888
+
+dubbo:
+  application:
+    id: cake-dingtalk-sso-service
+    name: cake-dingtalk-sso-service
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 20880
+  registry:
+    protocol: zookeeper
+    id: my-registry
+    address: 127.0.0.1:2181
+  scan:
+    basePackages: com.rany.cake.dingtalk
+
+spring:
+  application:
+    name: cake-dingtalk-sso-server
+  mvc:
+    favicon:
+      enabled: false
+  redis:
+    url: redis://127.0.0.1:6379
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+easy:
+  sso:
+    server:
+      maxAge: 7200
+    client:
+      enable: true
+      client-type: web
+      sso-server: http://127.0.0.1:8888/
+      login-url: http://127.0.0.1:8888/sso/loginPage
+      logout-url: /sso/logout
+      ignore-urls: /,/sso/loginPage,/sso/login,/oauth/login,/oauth/refreshToken,/swagger-resources/**,/v2/api-docs
+      ignore-resources: .js, .css, .jpg, .png, .ico, .html
+      ajax-failure-response:
+        code: 401
+        msg: 用户未登录
+        content-type: application/json
+    redis:
+      address: redis://127.0.0.1:6379
+
+# 开启swagger
+swagger:
+  enabled: true
