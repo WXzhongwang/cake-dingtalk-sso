@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <style>
+        body {
+            background-color: #F5F6F8;
+        }
+
+        /* STEP2：指定这个包裹容器元素的CSS样式，尤其注意宽高的设置 */
+        .login_container {
+            width: 300px;
+            height: 300px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+<div id="login_container"></div>
+<script src="https://g.alicdn.com/dingding/h5-dingtalk-login/0.21.0/ddlogin.js"></script>
+<script src="https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    var REDIRECT_URI = encodeURIComponent('http://127.0.0.1:8888/sso/code')
+    var webapp = [[${webapp}]]
+    var appId = [[${appId}]]
+    var url = encodeURIComponent(webapp);
+    console.log("url", url);
+    var goto = encodeURIComponent('https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+appId+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri='+url)
+    console.log("goto", goto);
+    var obj = DDLogin({
+     id:"login_container",
+     goto: goto,
+     style: "border:none;background-color:#FFFFFF;",
+     width : "365",
+     height: "400"
+ });
+
+var handleMessage = function (event) {
+  var origin = event.origin;
+  console.log("origin", event.origin);
+  if( origin == "https://login.dingtalk.com" ) { //判断是否来自ddLogin扫码事件。
+    var loginTmpCode = event.data;
+    //获取到loginTmpCode后就可以在这里构造跳转链接进行跳转了
+
+    console.log("loginTmpCode", loginTmpCode);
+    var redirect = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+appId+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri='+REDIRECT_URI+'&loginTmpCode=' + loginTmpCode;
+    window.location.href = redirect;
+  }
+};
+if (typeof window.addEventListener != 'undefined') {
+    window.addEventListener('message', handleMessage, false);
+} else if (typeof window.attachEvent != 'undefined') {
+    window.attachEvent('onmessage', handleMessage);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
