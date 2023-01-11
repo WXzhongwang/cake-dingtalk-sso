@@ -63,13 +63,18 @@
 
 
 
+
+
+
+
+
+
     </style>
 </head>
 <body>
 <div id="login_container"></div>
 <script src="https://g.alicdn.com/dingding/h5-dingtalk-login/0.21.0/ddlogin.js"></script>
 <script src="https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js"></script>
-
 <script type="text/javascript" th:inline="javascript">
     var REDIRECT_URI = encodeURIComponent('http://127.0.0.1:8888/sso/code')
     var webapp = [[${webapp}]]
@@ -94,7 +99,8 @@ var handleMessage = function (event) {
     //获取到loginTmpCode后就可以在这里构造跳转链接进行跳转了
 
     console.log("loginTmpCode", loginTmpCode);
-    var redirect = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+appId+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri='+REDIRECT_URI+'&loginTmpCode=' + loginTmpCode;
+    var redirect = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+appId+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri='+REDIRECT_URI+'?loginTmpCode=' + loginTmpCode;
+    console.log('redirect', redirect)
     window.location.href = redirect;
   }
 };
@@ -103,6 +109,12 @@ if (typeof window.addEventListener != 'undefined') {
 } else if (typeof window.attachEvent != 'undefined') {
     window.attachEvent('onmessage', handleMessage);
 }
+
+
+
+
+
+
 
 
 

@@ -51,3 +51,9 @@ easy:
 # 开启swagger
 swagger:
   enabled: true
+
+dingtalk:
+  agentId: 1264202242
+  appKey: dingdmo8khbuyyvgvcmi
+  appSecret: Gi1Aa8FKdUo28P1NNa5weWZKN3v8i_q9AcXCZ6oAnDOA-CElLhZJZNzR0Ig1OQnk
+  corpId: ding3f7cf4e7c622e7eb4ac5d6980864d335

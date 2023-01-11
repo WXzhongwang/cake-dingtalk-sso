@@ -1,8 +1,10 @@
 package com.rany.cake.dingtalk.server.rest;
 
+import com.aliyun.dingtalkcontact_1_0.models.GetUserResponseBody;
 import com.rany.cake.dingtalk.sdk.configuration.SsoConstants;
 import com.rany.cake.dingtalk.sdk.utils.SsoUtil;
 import com.rany.cake.dingtalk.server.properties.SsoServerProperties;
+import com.rany.cake.dingtalk.server.service.DingAgentService;
 import com.rany.cake.dingtalk.starter.SsoProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,6 +36,9 @@ public class WebController {
     @Autowired
     private SsoServerProperties serverProperties;
 
+    @Autowired
+    private DingAgentService dingAgentService;
+
 
     /**
      * web客户端登录页
@@ -52,8 +57,11 @@ public class WebController {
 
     @ApiOperation("code")
     @GetMapping("/sso/code")
-    private String code(String code) {
-        return null;
+    private String code(@RequestParam(value = "code", required = true) String code,
+                        @RequestParam(SsoConstants.WEBAPP) String webapp) {
+        String accessToken = dingAgentService.getAccessToken(code);
+        GetUserResponseBody userinfo = dingAgentService.getUserinfo(accessToken);
+        return userinfo.openId;
     }
 
 
