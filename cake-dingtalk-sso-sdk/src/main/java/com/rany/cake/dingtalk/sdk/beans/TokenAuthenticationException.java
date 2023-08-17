@@ -1,6 +1,9 @@
 package com.rany.cake.dingtalk.sdk.beans;
 
-public class TokenAuthenticationException extends RuntimeException  {
+/**
+ * @author tutu
+ */
+public class TokenAuthenticationException extends RuntimeException {
 
     private int code;
 

@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 8765
 
 dubbo:
   application:
@@ -36,10 +36,10 @@ easy:
     client:
       enable: true
       client-type: web
-      sso-server: http://127.0.0.1:8888/
-      login-url: http://127.0.0.1:8888/sso/loginPage
+      sso-server: http://127.0.0.1:8765/
+      login-url: http://127.0.0.1:8765/sso/loginPage
       logout-url: /sso/logout
-      ignore-urls: /,/sso/loginPage,/sso/login,/oauth/login,/oauth/refreshToken,/swagger-resources/**,/v2/api-docs
+      ignore-urls: /,/sso/loginPage,/sso/login,/sso/code,/swagger-resources/**,/v2/api-docs
       ignore-resources: .js, .css, .jpg, .png, .ico, .html
       ajax-failure-response:
         code: 401
@@ -57,3 +57,7 @@ dingtalk:
   appKey: dingdmo8khbuyyvgvcmi
   appSecret: Gi1Aa8FKdUo28P1NNa5weWZKN3v8i_q9AcXCZ6oAnDOA-CElLhZJZNzR0Ig1OQnk
   corpId: ding3f7cf4e7c622e7eb4ac5d6980864d335
+
+cake:
+  uic:
+    tenantId: 768460649511661568
