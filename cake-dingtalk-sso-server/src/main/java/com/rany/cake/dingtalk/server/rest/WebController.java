@@ -78,7 +78,7 @@ public class WebController {
     private String code(@RequestParam(value = "code", required = true) String code,
                         @RequestParam(value = "state") String webapp,
                         HttpServletRequest request, HttpServletResponse response
-            , ModelMap model) {
+            , ModelMap model) throws UnsupportedEncodingException {
         String corpAccessToken = dingAgentService.getCorpAccessToken();
         JSONObject userInfoByAuthCode = dingAgentService.getUserInfoByAuthCode(code);
         if (!ObjectUtils.isEmpty(userInfoByAuthCode)) {

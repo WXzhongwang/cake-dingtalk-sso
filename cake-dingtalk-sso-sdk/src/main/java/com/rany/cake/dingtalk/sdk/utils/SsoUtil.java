@@ -6,6 +6,7 @@ import com.rany.cake.dingtalk.sdk.beans.SsoUser;
 import com.rany.cake.dingtalk.sdk.configuration.SsoConstants;
 import com.rany.cake.dingtalk.sdk.properties.AjaxFailureResponse;
 import com.rany.cake.dingtalk.sdk.properties.SsoConfigProperties;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.AntPathMatcher;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 
@@ -30,14 +32,15 @@ public class SsoUtil {
 
 
     /**
-    * 描述:设置请求跨域
-    * @author maming
-    * @date 2021/11/12
-    * @param request
-    * @param response
-    * @return
-    */
-    public static void setRequestCross(HttpServletRequest request,HttpServletResponse response){
+     * 描述:设置请求跨域
+     *
+     * @param request
+     * @param response
+     * @return
+     * @author maming
+     * @date 2021/11/12
+     */
+    public static void setRequestCross(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
@@ -46,21 +49,21 @@ public class SsoUtil {
     }
 
 
-
     /**
-    * 描述:判断是否允许直接放行
-    * @author maming
-    * @date 2021/11/12
-    * @param path
-    * @param ssoProperties
-    * @return {@link boolean}
-    */
+     * 描述:判断是否允许直接放行
+     *
+     * @param path
+     * @param ssoProperties
+     * @return {@link boolean}
+     * @author maming
+     * @date 2021/11/12
+     */
     public static boolean isAllow(String path, SsoConfigProperties ssoProperties) {
 
         // 获取Resource白名单
         String[] ignoreResources = ssoProperties.getIgnoreResources();
 
-        for (String ignoreResource :ignoreResources) {
+        for (String ignoreResource : ignoreResources) {
             if (path.endsWith(ignoreResource)) {
                 return true;
             }
@@ -81,23 +84,23 @@ public class SsoUtil {
     }
 
 
-
     /**
-    * 描述: 判断是否已登录
-    * @author maming
-    * @date 2021/11/8
-    * @param request
-    * @param response
-    * @return {@link boolean}
-    */
-    public static boolean isLogined(HttpServletRequest request, HttpServletResponse response){
+     * 描述: 判断是否已登录
+     *
+     * @param request
+     * @param response
+     * @return {@link boolean}
+     * @author maming
+     * @date 2021/11/8
+     */
+    public static boolean isLogined(HttpServletRequest request, HttpServletResponse response) {
         // 默认未登录
         boolean isLogined = false;
 
         // 1、先从session中读取
         SsoUser currentUser = (SsoUser) request.getSession().getAttribute(SsoConstants.CURRENT_USER);
         if (!ObjectUtils.isEmpty(currentUser)) {
-                return true;
+            return true;
         }
 
 
@@ -111,7 +114,7 @@ public class SsoUtil {
 
         SsoUser ssoUser = JSON.parseObject(cookieVal, SsoUser.class);
 
-        if(!isLogined && !ObjectUtils.isEmpty(ssoUser)) {
+        if (!isLogined && !ObjectUtils.isEmpty(ssoUser)) {
             // 标记为已登录
             isLogined = true;
             // 将用户信息存储到session
@@ -123,19 +126,21 @@ public class SsoUtil {
 
 
     /**
-    * 描述:设置Cookie
-    * @author maming
-    * @date 2021/11/8
-    * @param request
-    * @param response
-    * @param key
-    * @param value
-    * @param maxAge
-    * @return
-    */
-    public static void saveCookie (HttpServletRequest request, HttpServletResponse response,
-                                   String key, String value, int maxAge){
-        Cookie cookie = new Cookie(key, BASE64Util.encode(value));
+     * 描述:设置Cookie
+     *
+     * @param request
+     * @param response
+     * @param key
+     * @param value
+     * @param maxAge
+     * @return
+     * @author maming
+     * @date 2021/11/8
+     */
+    @SneakyThrows
+    public static void saveCookie(HttpServletRequest request, HttpServletResponse response,
+                                  String key, String value, int maxAge) {
+        Cookie cookie = new Cookie(key, URLEncoder.encode(BASE64Util.encode(value), "UTF-8"));
         cookie.setMaxAge(maxAge);
         //设置访问路径
         cookie.setPath("/");
@@ -146,17 +151,18 @@ public class SsoUtil {
 
 
     /**
-    * 描述:删除Cookie
-    * @author maming
-    * @date 2021/11/12
-    * @param request
-    * @param response
-    * @param key
-    * @return
-    */
+     * 描述:删除Cookie
+     *
+     * @param request
+     * @param response
+     * @param key
+     * @return
+     * @author maming
+     * @date 2021/11/12
+     */
     public static void removeCookie(HttpServletRequest request, HttpServletResponse response, String key) {
         Cookie[] cookies = request.getCookies();
-        if(cookies != null){
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (key.equals(cookie.getName())) {
                     cookie.setMaxAge(0);
@@ -169,51 +175,56 @@ public class SsoUtil {
 
 
     /**
-    * 描述:通过key获取Cookie值
-    * @author maming
-    * @date 2021/11/8
-    * @param request
-    * @param key
-    * @return {@link String}
-    */
-    public static String getCookieVal(HttpServletRequest request, String key){
+     * 描述:通过key获取Cookie值
+     *
+     * @param request
+     * @param key
+     * @return {@link String}
+     * @author maming
+     * @date 2021/11/8
+     */
+    @SneakyThrows
+    public static String getCookieVal(HttpServletRequest request, String key) {
         String value = null;
         Cookie[] cookies = request.getCookies();
-        if(cookies != null){
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (key.equals(cookie.getName())) {
-                    value = BASE64Util.decode(cookie.getValue());
+                    String valueDecode = URLDecoder.decode(cookie.getValue(), "UTF-8");
+                    value = BASE64Util.decode(valueDecode);
                 }
             }
         }
-        return  value;
+        return value;
     }
 
 
     /**
-    * 描述:设置当前登录用户
-    * @author maming
-    * @date 2021/11/8
-    * @param request
-    * @param ssoUser
-    * @return
-    */
-    public static void setCurrentUser(HttpServletRequest request, SsoUser ssoUser){
+     * 描述:设置当前登录用户
+     *
+     * @param request
+     * @param ssoUser
+     * @return
+     * @author maming
+     * @date 2021/11/8
+     */
+    public static void setCurrentUser(HttpServletRequest request, SsoUser ssoUser) {
         HttpSession session = request.getSession();
-        if(session.getAttribute(SsoConstants.CURRENT_USER) == null) {
+        if (session.getAttribute(SsoConstants.CURRENT_USER) == null) {
             session.setAttribute(SsoConstants.CURRENT_USER, ssoUser);
         }
     }
 
 
     /**
-    * 描述: 获取当前登录用户
-    * @author maming
-    * @date 2021/11/10
-    * @param request
-    * @return {@link SsoUser}
-    */
-    public static SsoUser getCurrentUser(HttpServletRequest request){
+     * 描述: 获取当前登录用户
+     *
+     * @param request
+     * @return {@link SsoUser}
+     * @author maming
+     * @date 2021/11/10
+     */
+    public static SsoUser getCurrentUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
         if (session == null) {
             return null;
@@ -234,15 +245,15 @@ public class SsoUtil {
     }
 
 
-
     /**
-    * 描述: 清除session
-    * @author maming
-    * @date 2021/11/9
-    * @param request
-    * @return
-    */
-    public static void invalidateSession(HttpServletRequest request){
+     * 描述: 清除session
+     *
+     * @param request
+     * @return
+     * @author maming
+     * @date 2021/11/9
+     */
+    public static void invalidateSession(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
         if (session == null) {
@@ -260,14 +271,15 @@ public class SsoUtil {
 
 
     /**
-    * 描述:跳转登录页
-    * @author maming
-    * @date 2021/11/8
-    * @param request
-    * @param response
-    * @param ssoProperties
-    * @return
-    */
+     * 描述:跳转登录页
+     *
+     * @param request
+     * @param response
+     * @param ssoProperties
+     * @return
+     * @author maming
+     * @date 2021/11/8
+     */
     public static void redirectLogin(HttpServletRequest request,
                                      HttpServletResponse response,
 
@@ -278,13 +290,13 @@ public class SsoUtil {
         String path = request.getRequestURI();
         String ssoServer = ssoProperties.getSsoServer();
 
-        if(!ssoServer.endsWith("/")) {
+        if (!ssoServer.endsWith("/")) {
             ssoServer += "/";
         }
 
         if (ssoProperties.getLogoutUrl().equals(path)) {
             // 当前服务地址
-            String link = url.replace(path,"");
+            String link = url.replace(path, "");
             url = String.format("%s%s%s%s%s", ssoServer, "sso/loginPage?", SsoConstants.WEBAPP, "=", URLEncoder.encode(link, "UTF-8"));
         } else {
             url = String.format("%s%s%s%s%s", ssoServer, "sso/loginPage?", SsoConstants.WEBAPP, "=", URLEncoder.encode(url, "UTF-8"));
@@ -295,14 +307,15 @@ public class SsoUtil {
 
 
     /**
-    * 描述:判断是否为ajax请求
-    * @author maming
-    * @date 2021/11/12
-    * @param request
-    * @return {@link boolean}
-    */
-    public static boolean isAjaxRequest(HttpServletRequest request){
-        if("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))){
+     * 描述:判断是否为ajax请求
+     *
+     * @param request
+     * @return {@link boolean}
+     * @author maming
+     * @date 2021/11/12
+     */
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
             return true;
         }
 
@@ -311,14 +324,15 @@ public class SsoUtil {
 
 
     /**
-    * 描述:ajax认证失败响应
-    * @author maming
-    * @date 2021/11/12
-    * @param response
-    * @param ssoProperties
-    * @return
-    */
-    public static void ajaxAuthFailure(HttpServletResponse response, SsoConfigProperties ssoProperties){
+     * 描述:ajax认证失败响应
+     *
+     * @param response
+     * @param ssoProperties
+     * @return
+     * @author maming
+     * @date 2021/11/12
+     */
+    public static void ajaxAuthFailure(HttpServletResponse response, SsoConfigProperties ssoProperties) {
         AjaxFailureResponse ajaxFailureResponse = ssoProperties.getAjaxFailureResponse();
         response.setContentType(ajaxFailureResponse.getContentType());
         response.setStatus(ajaxFailureResponse.getCode());

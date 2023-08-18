@@ -95,6 +95,9 @@
 
 
 
+
+
+
     </style>
 </head>
 <body>
@@ -128,9 +131,8 @@ var handleMessage = function (event) {
   if( origin == "https://login.dingtalk.com" ) { //判断是否来自ddLogin扫码事件。
     var loginTmpCode = event.data;
     // 获取到loginTmpCode后就可以在这里构造跳转链接进行跳转了
-    alert(url);
     console.log("loginTmpCode", loginTmpCode);
-    var redirect = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+appId+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri='+REDIRECT_URI+'&loginTmpCode=' + loginTmpCode + '&webapp='+url;
+    var redirect = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+appId+'&response_type=code&scope=snsapi_login&state='+url+'&redirect_uri='+REDIRECT_URI+'&loginTmpCode=' + loginTmpCode;
     console.log('redirect', redirect)
     window.location.href = redirect;
   }
@@ -140,6 +142,9 @@ if (typeof window.addEventListener != 'undefined') {
 } else if (typeof window.attachEvent != 'undefined') {
     window.attachEvent('onmessage', handleMessage);
 }
+
+
+
 
 
 
