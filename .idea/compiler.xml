@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="cake-dingtalk-sso-sdk" />
         <module name="cake-dingtalk-sso-starter" />
+        <module name="cake-sso-example-springboot" />
         <module name="cake-dingtalk-sso-client" />
         <module name="cake-dingtalk-sso-server" />
       </profile>

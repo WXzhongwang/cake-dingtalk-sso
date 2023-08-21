@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: cake-dingtalk-sso-boot
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+server:
+  port: 4100
+
+easy:
+  sso:
+    client:
+      enable: true
+      client-type: web
+      sso-server: http://127.0.0.1:8765/
+      login-url: http://127.0.0.1:8765/sso/loginPage
+      logout-url: /sso/logout
+      ignore-urls: /sso/loginPage,/sso/login,/oauth/login
+      ignore-resources: .js, .css, .jpg, .png, .ico, .html
+      ajax-failure-response:
+        content-type: application/json
+        code: 401
+        msg: 用户未登录
+    redis:
+      address: redis://127.0.0.1:6379

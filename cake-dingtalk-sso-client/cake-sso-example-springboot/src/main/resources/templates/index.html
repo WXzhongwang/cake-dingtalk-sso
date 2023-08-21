@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSO Client(SpringBoot)</title>
+</head>
+<body>
+    <h1>hello</h1>
+    <div style="text-align: center;margin-top: 100px;">
+        <h1>【<span th:text="${session.currentUser.userName}"></span>】login success.</h1>
+
+        <a href="/sso/logout">Logout</a>
+
+    </div>
+</body>
+</html>

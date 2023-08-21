@@ -13,6 +13,7 @@
         <module>cake-dingtalk-sso-sdk</module>
         <module>cake-dingtalk-sso-server</module>
         <module>cake-dingtalk-sso-starter</module>
+        <module>cake-dingtalk-sso-client/cake-sso-example-springboot</module>
     </modules>
     <packaging>pom</packaging>
 
