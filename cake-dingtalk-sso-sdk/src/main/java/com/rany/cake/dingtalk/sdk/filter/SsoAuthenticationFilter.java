@@ -81,7 +81,7 @@ public class SsoAuthenticationFilter implements Filter {
         if (ObjectUtils.isEmpty(ssoProperties)) {
             log.info("初始化统一认证客户端...");
             String fileName = config.getInitParameter("configFile");
-            fileName = StringUtils.isBlank(fileName) ? "easy-sso-client.xml" : fileName;
+            fileName = StringUtils.isBlank(fileName) ? "cake-sso-client.xml" : fileName;
             log.info("尝试使用配置文件：" + fileName);
             PropertiesManagerContainer.init(fileName);
             try {
@@ -112,8 +112,7 @@ public class SsoAuthenticationFilter implements Filter {
     }
 
 
-
-    private SsoWebFilter initSsoWebFilter(){
+    private SsoWebFilter initSsoWebFilter() {
         if (ssoWebFilter == null) {
             ssoWebFilter = new SsoWebFilter(ssoProperties);
         }
@@ -121,7 +120,7 @@ public class SsoAuthenticationFilter implements Filter {
         return ssoWebFilter;
     }
 
-    private SsoTokenFilter initSsoTokenFilter(){
+    private SsoTokenFilter initSsoTokenFilter() {
         if (ssoTokenFilter == null) {
             ssoTokenFilter = new SsoTokenFilter(ssoProperties);
         }
