@@ -81,7 +81,7 @@ public class WebController {
                         @RequestParam(value = "state") String webapp,
                         HttpServletRequest request, HttpServletResponse response
             , ModelMap model) throws IOException {
-        String corpAccessToken = dingAgentService.getCorpAccessToken();
+        // String corpAccessToken = dingAgentService.getCorpAccessToken();
         JSONObject userInfoByAuthCode = dingAgentService.getUserInfoByAuthCode(code);
         if (!ObjectUtils.isEmpty(userInfoByAuthCode)) {
             String unionId = userInfoByAuthCode.getString("unionid");
