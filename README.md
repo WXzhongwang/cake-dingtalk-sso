@@ -8,6 +8,7 @@
 5. 支持app端token认证
 6. 支持拓展账号密码登录
 7. UIC模型请参考[uic-center](https://github.com/WXzhongwang/uic-center)
+7. springboot 集成参考
 
 **特性:**
 
