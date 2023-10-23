@@ -3,8 +3,7 @@
 **cake-dingtalk-sso** 是一个基于 SpringBoot + dingtalk内嵌网页登录的SSO 的统一认证服务端应用, 提供统一的登录认证能力。
 
 1. SpringBoot 2.2.6.RELEASE
-2. uic-center 统一账号服务
-3. zookeeper+dubbo
+2. 底层使用uic-center 统一账号服务
 4. redis访问缓存存储(jedis)
 5. 支持app端token认证
 6. 支持拓展账号密码登录
@@ -16,6 +15,8 @@
 - [x] **统一认证中心**  : 统一用户访问，只有一个用户中心
 - [x] **钉钉网页嵌入方式**:  可围绕此方式搭建企业应用，一套登录，一套用户体系，打通内部统一用户诉求。
 - [建设中] **用户不在企业内校验**: 边缘条件校验
+
+![简单登录页参考](https://github.com/WXzhongwang/cake-dingtalk-sso/blob/main/WX20231023-204304%402x.png)
 
 ## 快速接入
 
@@ -46,7 +47,6 @@ import org.springframework.context.annotation.ComponentScan;
  * @email 18668485565163.com
  */
 @EnableCakeSso
-@ComponentScan(basePackages = "org.example")
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
