@@ -17,6 +17,7 @@
 - [建设中] **用户不在企业内校验**: 边缘条件校验
 
 ![简单登录页参考](https://github.com/WXzhongwang/cake-dingtalk-sso/blob/main/WX20231023-204304%402x.png)
+![接入成功登录成功](https://github.com/WXzhongwang/cake-dingtalk-sso/blob/main/WX20231023-204801@2x.png)
 
 ## 快速接入
 
