@@ -25,12 +25,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -74,11 +76,11 @@ public class WebController {
     }
 
     @ApiOperation("code")
-    @GetMapping("/sso/code")
+    @RequestMapping(value = "/sso/code", method = RequestMethod.GET)
     private String code(@RequestParam(value = "code", required = true) String code,
                         @RequestParam(value = "state") String webapp,
                         HttpServletRequest request, HttpServletResponse response
-            , ModelMap model) throws UnsupportedEncodingException {
+            , ModelMap model) throws IOException {
         String corpAccessToken = dingAgentService.getCorpAccessToken();
         JSONObject userInfoByAuthCode = dingAgentService.getUserInfoByAuthCode(code);
         if (!ObjectUtils.isEmpty(userInfoByAuthCode)) {
@@ -143,7 +145,7 @@ public class WebController {
             @ApiImplicitParam(name = "password", required = true),
             @ApiImplicitParam(name = "webapp")
     })
-    @PostMapping("/sso/login")
+    @RequestMapping(value = "/sso/login", method = RequestMethod.POST)
     public String login(@RequestParam(value = "username", required = true) String username,
                         @RequestParam(value = "password", required = true) String password,
                         @RequestParam(SsoConstants.WEBAPP) String webapp,
@@ -199,7 +201,7 @@ public class WebController {
      * @date 2021/11/12
      */
     @ApiOperation("用户注销")
-    @GetMapping("/sso/logout")
+    @RequestMapping(value = "/sso/logout", method = RequestMethod.GET)
     public String logout(HttpServletRequest request,
                          HttpServletResponse response) {
         SsoUtil.invalidateSession(request);
