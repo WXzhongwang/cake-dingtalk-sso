@@ -19,6 +19,7 @@ import com.dingtalk.api.response.OapiUserGetUseridByUnionidResponse;
 import com.rany.cake.dingtalk.server.properties.DingAppProperties;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -82,13 +83,11 @@ public class DingAgentService {
         return null;
     }
 
-    public String getAccessToken(String authCode
-            , String refreshToken) {
+    public String getAccessToken(String authCode) {
         GetUserTokenRequest getUserTokenRequest = new GetUserTokenRequest()
                 .setClientId(dingAppProperties.getAppKey())
                 .setClientSecret(dingAppProperties.getAppSecret())
                 .setCode(authCode)
-                // .setRefreshToken(refreshToken)
                 .setGrantType("authorization_code");
         GetUserTokenResponse getUserTokenResponse = null;
         try {
@@ -104,8 +103,8 @@ public class DingAgentService {
 
     public String getCorpAccessToken() {
         com.aliyun.dingtalkoauth2_1_0.models.GetAccessTokenRequest getAccessTokenRequest = new com.aliyun.dingtalkoauth2_1_0.models.GetAccessTokenRequest()
-                .setAppKey("dingdmo8khbuyyvgvcmi")
-                .setAppSecret("Gi1Aa8FKdUo28P1NNa5weWZKN3v8i_q9AcXCZ6oAnDOA-CElLhZJZNzR0Ig1OQnk");
+                .setAppKey(dingAppProperties.getAppKey())
+                .setAppSecret(dingAppProperties.getAppSecret());
         try {
             GetAccessTokenResponse accessToken = authClient.getAccessToken(getAccessTokenRequest);
             return accessToken.getBody().getAccessToken();
@@ -152,5 +151,80 @@ public class DingAgentService {
         String result = rsp.getBody();
         log.info(result);
         return result;
+    }
+
+    private static final String DINGTALK_BASE_URL = "https://oapi.dingtalk.com";
+
+    public String getPersistentCode(String tmpAuthCode) {
+        try {
+            // 构建请求 URL
+            String apiUrl = DINGTALK_BASE_URL + "/sns/get_persistent_code?accessKey=" + dingAppProperties.getAppKey() + "&accessSecret=" + dingAppProperties.getAppSecret();
+
+            // 构建请求体
+            String requestBody = "{\"tmp_auth_code\": \"" + tmpAuthCode + "\"}";
+
+            // 发送 HTTP 请求
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(apiUrl)
+                    .post(RequestBody.create(MediaType.get("application/json"), requestBody))
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            // 处理响应
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                // 解析响应获取持久授权码
+                // 注意：实际应用中可能还需要处理异常、错误码等情况
+                return responseBody;
+            } else {
+                // 处理请求失败的情况
+                System.out.println("Request failed: " + response.code() + " - " + response.message());
+            }
+        } catch (Exception e) {
+            // 处理异常
+            e.printStackTrace();
+        }
+
+        // 返回 null 表示获取失败
+        return null;
+    }
+
+    public String getUserInfo(String persistentCode) {
+        try {
+            // 构建请求 URL
+            String apiUrl = DINGTALK_BASE_URL + "/sns/get_sns_token?accessKey=" +
+                    dingAppProperties.getAppKey() + "&accessSecret=" + dingAppProperties.getAppSecret();
+
+            // 构建请求体
+            String requestBody = "{\"persistent_code\": \"" + persistentCode + "\"}";
+
+            // 发送 HTTP 请求
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(apiUrl)
+                    .post(RequestBody.create(MediaType.get("application/json"), requestBody))
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            // 处理响应
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                // 解析响应获取用户信息
+                // 注意：实际应用中可能还需要处理异常、错误码等情况
+                return responseBody;
+            } else {
+                // 处理请求失败的情况
+                System.out.println("Request failed: " + response.code() + " - " + response.message());
+            }
+        } catch (Exception e) {
+            // 处理异常
+            e.printStackTrace();
+        }
+
+        // 返回 null 表示获取失败
+        return null;
     }
 }
