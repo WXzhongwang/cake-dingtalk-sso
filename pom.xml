@@ -219,11 +219,11 @@
     <distributionManagement>
         <repository>
             <id>private-releases</id>
-            <url>http://xxxx/repository/maven-releases</url>
+            <url>https://packages.aliyun.com/maven/repository/2470424-release-mtB7Nz</url>
         </repository>
         <snapshotRepository>
             <id>private-snapshots</id>
-            <url>http://xxx/repository/maven-snapshots</url>
+            <url>https://packages.aliyun.com/maven/repository/2470424-snapshot-M3PWj7</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
