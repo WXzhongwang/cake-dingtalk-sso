@@ -31,9 +31,10 @@ public final class SsoConstants {
     public static final String APP_CLIENT = "app";
 
     /**
-     * 用户名或密码错误
+     * 未知的用户信息
      */
-    public static final String AUTH_FAILED_WARN = "用户名或密码错误";
+    public static final String AUTH_FAILED_WARN = "未知的用户信息";
+    public static final String ACCOUNT_REGISTER_FAILED = "企业应用新用户注册失败";
 
     /**
      * app客户端退出接口地址

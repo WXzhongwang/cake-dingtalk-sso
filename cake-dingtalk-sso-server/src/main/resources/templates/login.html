@@ -49,6 +49,9 @@
 <div class="container">
     <h2>扫码登录</h2>
     <div class="form-group">
+        <div th:if="${not #strings.isEmpty(msg)}" style="text-align: center;">
+            [[${msg}]]
+        </div>
         <div id="login_container"></div>
     </div>
 </div>

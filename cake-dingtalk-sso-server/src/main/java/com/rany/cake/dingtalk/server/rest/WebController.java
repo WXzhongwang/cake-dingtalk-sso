@@ -9,9 +9,11 @@ import com.rany.cake.dingtalk.sdk.utils.SsoUtil;
 import com.rany.cake.dingtalk.server.properties.SsoServerProperties;
 import com.rany.cake.dingtalk.server.service.DingAgentService;
 import com.rany.cake.dingtalk.starter.SsoProperties;
+import com.rany.uic.api.command.account.CreateAccountCommand;
 import com.rany.uic.api.facade.account.AccountFacade;
 import com.rany.uic.api.query.account.AccountDingIdQuery;
 import com.rany.uic.common.dto.account.AccountDTO;
+import com.rany.uic.common.enums.AccountTypeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -96,8 +98,40 @@ public class WebController {
             AccountDingIdQuery accountBasicQuery = new AccountDingIdQuery();
             accountBasicQuery.setTenantId(tenantId);
             accountBasicQuery.setDingUnionId(unionId);
-            PojoResult<AccountDTO> accountResult = accountFacade.getAccountByDingId(accountBasicQuery);
-            AccountDTO content = accountResult.getContent();
+
+            AccountDTO content = null;
+            try {
+                PojoResult<AccountDTO> accountResult = accountFacade.getAccountByDingId(accountBasicQuery);
+                content = accountResult.getContent();
+            } catch (Exception ex) {
+                log.error("获取用户信息失败", ex);
+//                model.put("msg", SsoConstants.AUTH_FAILED_WARN);
+//                return "login";
+
+                // 尝试注册用户
+                try {
+                    CreateAccountCommand createAccountCommand = new CreateAccountCommand();
+                    createAccountCommand.setTenantId(tenantId);
+                    createAccountCommand.setAccountName(nick);
+                    createAccountCommand.setOpenId(openid);
+                    createAccountCommand.setDingUnionId(unionId);
+                    createAccountCommand.setAccountType(AccountTypeEnum.BASIC.name());
+                    PojoResult<Long> account = accountFacade.createAccount(createAccountCommand);
+                    if (account == null || !account.getSuccess()) {
+                        model.put("msg", SsoConstants.ACCOUNT_REGISTER_FAILED);
+                        return "login";
+                    }
+                } catch (Exception exception) {
+                    model.put("msg", SsoConstants.ACCOUNT_REGISTER_FAILED);
+                    return "login";
+                }
+            }
+
+
+            // 注册完再次查询
+            accountBasicQuery.setDingUnionId(unionId);
+            PojoResult<AccountDTO> newAccountResult = accountFacade.getAccountByDingId(accountBasicQuery);
+            content = newAccountResult.getContent();
 
             SsoUser ssoUser = SsoUser.builder()
                     .userId(String.valueOf(content.getId()))
