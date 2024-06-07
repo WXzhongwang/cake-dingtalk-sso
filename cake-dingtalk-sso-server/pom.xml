@@ -39,13 +39,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-        <!--        &lt;!&ndash;devtools热部署&ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-devtools</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--            <scope>true</scope>-->
-        <!--        </dependency>-->
+
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
@@ -59,8 +53,8 @@
 
 
         <dependency>
-            <groupId>com.rany.uic</groupId>
-            <artifactId>uic-api</artifactId>
+            <groupId>com.rany.ops</groupId>
+            <artifactId>cake-ops-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

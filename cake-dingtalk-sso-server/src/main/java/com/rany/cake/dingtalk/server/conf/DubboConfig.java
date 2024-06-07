@@ -1,7 +1,7 @@
 package com.rany.cake.dingtalk.server.conf;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.rany.uic.api.facade.account.AccountFacade;
+import com.rany.ops.api.facade.account.AccountFacade;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
