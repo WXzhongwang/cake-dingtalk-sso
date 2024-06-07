@@ -12,6 +12,12 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Reference: <a href="https://www.cnblogs.com/linyb-geek/p/16581892.html">
+ * 记一次springboot项目自定义HandlerMethodArgumentResolver不生效原因与解法</>
+ *
+ * @author zhongshengwang
+ */
 @Configuration
 @AutoConfigureAfter(SsoAutoConfiguration.class)
 public class HandlerMethodArgumentResolverAutoConfiguration implements InitializingBean {
