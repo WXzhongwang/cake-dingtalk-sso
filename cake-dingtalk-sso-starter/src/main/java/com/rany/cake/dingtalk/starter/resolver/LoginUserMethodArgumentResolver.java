@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class LoginUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private SsoProperties ssoProperties;
+    private final SsoProperties ssoProperties;
 
     public LoginUserMethodArgumentResolver(SsoProperties ssoProperties) {
         this.ssoProperties = ssoProperties;
@@ -33,9 +33,8 @@ public class LoginUserMethodArgumentResolver implements HandlerMethodArgumentRes
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-
         if (ssoProperties.getClientType().equals(SsoConstants.WEB_CLIENT)) {
             return SsoUtil.getCurrentUser(request);
         } else {

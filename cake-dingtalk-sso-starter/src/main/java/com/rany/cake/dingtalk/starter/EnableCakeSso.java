@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 /**
  * @author tutu
  */
-@Import({SsoAutoConfiguration.class, JedisAutoConfiguration.class})
+@Import({SsoAutoConfiguration.class, JedisAutoConfiguration.class, HandlerMethodArgumentResolverAutoConfiguration.class})
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
