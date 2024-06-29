@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+<h1>WebSocket Example</h1>
+<div id="messages">Waiting for messages...</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const messagesDiv = document.getElementById("messages");
+        const socket = new WebSocket("ws://127.0.0.1:4100/api/ws"); // 修改为你的 WebSocket 服务器地址
+
+        socket.onopen = () => {
+            messagesDiv.innerHTML += "<p>WebSocket connection opened.</p>";
+            // 可以发送初始化消息
+            socket.send("Hello Server!");
+        };
+
+        socket.onmessage = (event) => {
+            const message = document.createElement("p");
+            message.textContent = "Message from server: " + event.data;
+            messagesDiv.appendChild(message);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // 自动滚动到底部
+        };
+
+        socket.onerror = (error) => {
+            const errorMessage = document.createElement("p");
+            errorMessage.textContent = "WebSocket error: " + error.message;
+            messagesDiv.appendChild(errorMessage);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+        socket.onclose = (event) => {
+            const closeMessage = document.createElement("p");
+            closeMessage.textContent = "WebSocket connection closed: " + event.reason;
+            messagesDiv.appendChild(closeMessage);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+    });
+</script>
+</body>
+</html>
