@@ -1,0 +1,21 @@
+FROM openjdk:8-jdk-alpine
+# 定义构建参数 ENV
+ARG ENV=production
+
+ENV APP_NAME=cake-dingtalk-sso-server
+
+RUN apk add --no-cache bash && \
+    mkdir -p /home/admin/$APP_NAME && \
+    mkdir -p /home/admin/$APP_NAME/logs
+
+# 添加 appctl.sh 脚本
+ADD /APP-META/appctl.sh /home/admin/appctl.sh
+RUN chmod +x /home/admin/appctl.sh
+
+# 挂载目录
+VOLUME /tmp
+
+ADD /cake-dingtalk-sso-server/target/cake-dingtalk-sso-server.jar /home/admin/cake-dingtalk-sso-server/cake-dingtalk-sso-server.jar
+
+# 设置 ENTRYPOINT
+ENTRYPOINT ["/home/admin/appctl.sh", "cake-dingtalk-sso-server", "start", "prod"]
