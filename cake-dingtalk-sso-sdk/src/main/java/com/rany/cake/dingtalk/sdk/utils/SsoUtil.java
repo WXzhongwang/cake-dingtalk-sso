@@ -144,11 +144,26 @@ public class SsoUtil {
         cookie.setMaxAge(maxAge);
         //设置访问路径
         cookie.setPath("/");
-        cookie.setDomain(request.getServerName());
+        String rootDomain = getRootDomain(request.getServerName());
+        log.info("cookie root domain:" + rootDomain);
+        cookie.setDomain(rootDomain);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
     }
 
+
+    // 辅助方法获取根域名
+    private static String getRootDomain(String serverName) {
+        if (serverName.contains(".")) {
+            String[] parts = serverName.split("\\.");
+            StringBuilder rootDomain = new StringBuilder(".");
+            for (int i = parts.length - 1; i > 0; i--) {
+                rootDomain.insert(0, parts[i] + ".");
+            }
+            return rootDomain.toString();
+        }
+        return serverName;
+    }
 
     /**
      * 描述:删除Cookie
