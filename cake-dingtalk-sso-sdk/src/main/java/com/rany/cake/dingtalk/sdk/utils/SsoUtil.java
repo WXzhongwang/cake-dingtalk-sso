@@ -153,15 +153,19 @@ public class SsoUtil {
 
 
     // 辅助方法获取根域名
-    private static String getRootDomain(String serverName) {
+    public static String getRootDomain(String serverName) {
         if (StringUtils.equals(serverName, "127.0.0.1")) {
             return serverName;
         }
         if (serverName.contains(".")) {
             String[] parts = serverName.split("\\.");
             StringBuilder rootDomain = new StringBuilder(".");
-            for (int i = parts.length - 1; i > 0; i--) {
-                rootDomain.insert(0, parts[i] + ".");
+            for (int i = parts.length - 2; i < parts.length; i++) { // 从倒数第二个部分开始
+                rootDomain.append(parts[i]).append(".");
+            }
+            // 移除最后的点
+            if (rootDomain.length() > 1) { // 确保至少保留一个点
+                rootDomain.deleteCharAt(rootDomain.length() - 1);
             }
             return rootDomain.toString();
         }
