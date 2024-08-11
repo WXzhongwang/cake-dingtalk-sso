@@ -6,16 +6,6 @@
     <springProperty scope="context" name="log.path" source="logging.file.path"
                     defaultValue="/home/admin/cake-dingtalk-sso-server/logs"/>
 
-    <springProperty scope="context" name="rabbitmq-address" source="spring.rabbitmq.addresses"
-                    defaultValue="127.0.0.1:5672"/>
-    <springProperty scope="context" name="rabbitmq-username" source="spring.rabbitmq.username" defaultValue="guest"/>
-    <springProperty scope="context" name="rabbitmq-password" source="spring.rabbitmq.password" defaultValue="guest"/>
-    <springProperty scope="context" name="rabbitmq-virtual-host" source="spring.rabbitmq.virtualHost" defaultValue="/"/>
-    <springProperty scope="context" name="exchange-name" source="devops.log.exchangeName"
-                    defaultValue="default-exchange"/>
-    <springProperty scope="context" name="binding-key" source="devops.log.bindingKey" defaultValue="default-routing"/>
-
-
     <property name="CONSOLE_LOG_PATTERN"
               value="%yellow(%date{yyyy-MM-dd HH:mm:ss})|%X{traceId}|%highlight([%-5level])|%green(%logger)|%msg%n"/>
 
@@ -44,35 +34,11 @@
             <maxHistory>15</maxHistory>
         </rollingPolicy>
     </appender>
-
-
-    <appender name="RABBITMQ" class="org.springframework.amqp.rabbit.logback.AmqpAppender">
-        <layout>
-            <pattern>[%X{__pipe_key__}] - %d{yyyy-MM-dd HH:mm:ss.SSS} %msg%n</pattern>
-        </layout>
-        <!--rabbitmq地址 -->
-        <addresses>${rabbitmq-address}</addresses>
-        <username>${rabbitmq-username}</username>
-        <password>${rabbitmq-password}</password>
-        <virtualHost>${rabbitmq-virtual-host}</virtualHost>
-
-        <declareExchange>false</declareExchange>
-        <exchangeType>direct</exchangeType>
-        <exchangeName>${exchange-name}</exchangeName>
-        <routingKeyPattern>${binding-key}</routingKeyPattern>
-        <generateId>true</generateId>
-        <charset>UTF-8</charset>
-        <durable>true</durable>
-        <deliveryMode>NON_PERSISTENT</deliveryMode>
-    </appender>
-
+    
     <springProfile name="dev,test,pre,prod">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
         </root>
-        <logger name="RabbitMq" level="debug">
-            <appender-ref ref="RABBITMQ"/>
-        </logger>
     </springProfile>
 </configuration>

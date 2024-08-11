@@ -20,6 +20,8 @@ dubbo:
     basePackages: com.rany.cake.dingtalk
 
 spring:
+  profiles:
+    active: dev
   application:
     name: cake-dingtalk-sso-server
   mvc:

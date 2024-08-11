@@ -12,8 +12,6 @@ dubbo:
 spring:
   redis:
     url: redis://redis.default.svc.cluster.local:6379
-  profiles:
-    active: test
 cake:
   sso:
     redis:
