@@ -154,6 +154,9 @@ public class SsoUtil {
 
     // 辅助方法获取根域名
     private static String getRootDomain(String serverName) {
+        if (StringUtils.equals(serverName, "127.0.0.1")) {
+            return serverName;
+        }
         if (serverName.contains(".")) {
             String[] parts = serverName.split("\\.");
             StringBuilder rootDomain = new StringBuilder(".");
