@@ -16,7 +16,6 @@ dubbo:
   registry:
     protocol: zookeeper
     id: my-registry
-    address: 127.0.0.1:2181
   scan:
     basePackages: com.rany.cake.dingtalk
 
@@ -26,8 +25,6 @@ spring:
   mvc:
     favicon:
       enabled: false
-  redis:
-    url: redis://127.0.0.1:6379
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
