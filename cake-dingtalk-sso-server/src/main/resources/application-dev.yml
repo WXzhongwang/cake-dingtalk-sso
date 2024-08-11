@@ -37,7 +37,7 @@ easy:
       sso-server: http://127.0.0.1:8765/
       login-url: http://127.0.0.1:8765/sso/loginPage
       logout-url: /sso/logout
-      ignore-urls: /ok,/sso/loginPage,/sso/login,/sso/code,/swagger-resources/**,/v2/api-docs
+      ignore-urls: /,/ok,/sso/loginPage,/sso/login,/sso/code,/swagger-resources/**,/v2/api-docs
       ignore-resources: .js, .css, .jpg, .png, .ico, .html
       ajax-failure-response:
         code: 401
