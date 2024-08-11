@@ -1,5 +1,9 @@
 server:
-  port: 8765
+  port: 8300
+
+logging:
+  file:
+    path: /home/admin/cake-dingtalk-sso-server/logs
 
 dubbo:
   application:
@@ -29,28 +33,8 @@ spring:
     suffix: .html
     cache: false
 
-easy:
-  sso:
-    server:
-      maxAge: 7200
-    client:
-      enable: true
-      client-type: web
-      sso-server: http://127.0.0.1:8765/
-      login-url: http://127.0.0.1:8765/sso/loginPage
-      logout-url: /sso/logout
-      ignore-urls: /,/sso/loginPage,/sso/login,/sso/code,/swagger-resources/**,/v2/api-docs
-      ignore-resources: .js, .css, .jpg, .png, .ico, .html
-      ajax-failure-response:
-        code: 401
-        msg: 用户未登录
-        content-type: application/json
-    redis:
-      address: redis://127.0.0.1:6379
 
-# 开启swagger
-swagger:
-  enabled: true
+
 
 dingtalk:
   agentId: 1264202242
