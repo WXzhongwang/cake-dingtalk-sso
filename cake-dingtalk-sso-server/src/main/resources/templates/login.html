@@ -58,7 +58,8 @@
 <script src="https://g.alicdn.com/dingding/h5-dingtalk-login/0.21.0/ddlogin.js"></script>
 <script src="https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js"></script>
 <script type="text/javascript" th:inline="javascript">
-    let REDIRECT_URI = 'http://test.sso.rany.com/sso/code'
+    // let REDIRECT_URI = 'http://test.sso.rany.com/sso/code'
+    let REDIRECT_URI = [[${redirectUri}]]
     let url = [[${webapp}]]
     let appId = [[${appId}]]
 

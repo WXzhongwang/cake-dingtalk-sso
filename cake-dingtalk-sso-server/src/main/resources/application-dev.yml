@@ -36,6 +36,7 @@ easy:
       client-type: web
       sso-server: http://127.0.0.1:8765/
       login-url: http://127.0.0.1:8765/sso/loginPage
+      sso-callback-url: http://127.0.0.1:8765/sso/code
       logout-url: /sso/logout
       ignore-urls: /,/ok,/sso/loginPage,/sso/login,/sso/code,/swagger-resources/**,/v2/api-docs
       ignore-resources: .js, .css, .jpg, .png, .ico, .html
@@ -43,5 +44,6 @@ easy:
         code: 401
         msg: 用户未登录
         content-type: application/json
+
     redis:
       address: redis://127.0.0.1:6379

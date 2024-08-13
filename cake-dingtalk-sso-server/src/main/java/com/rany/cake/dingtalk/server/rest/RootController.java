@@ -14,6 +14,6 @@ public class RootController {
 
     @GetMapping("/ok")
     public String ok() {
-        return "ok";
+        return "success";
     }
 }

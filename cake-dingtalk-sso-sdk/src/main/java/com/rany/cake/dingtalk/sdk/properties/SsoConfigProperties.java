@@ -22,25 +22,26 @@ public class SsoConfigProperties {
 
     private static SsoConfigProperties ssoProperties;
 
-    /**应用类型(默认web服务)
-     *
+    /**
+     * 应用类型(默认web服务)
      */
     private String clientType = SsoConstants.WEB_CLIENT;
 
     /**
      * 放行的url
      */
-    private  String[] ignoreUrls = {};
+    private String[] ignoreUrls = {};
 
     /**
      * 放行的资源文件
      */
-    private  String[] ignoreResources = {".js", ".css", ".jpg", ".png", ".ico", ".html"};
+    private String[] ignoreResources = {".js", ".css", ".jpg", ".png", ".ico", ".html"};
 
     /**
      * sso服务器地址
      */
     private String ssoServer;
+    private String ssoCallbackUrl;
 
     private String logoutUrl = SsoConstants.WEB_CLIENT_LOGOUT_URL;
 
@@ -57,6 +58,8 @@ public class SsoConfigProperties {
     private static final String IGNORE_RESOURCES = "ignoreResources";
 
     private static final String SSO_SERVER = "ssoServer";
+
+    private static final String SSO_CALLBACK_URL = "ssoCallbackUrl";
 
     private static final String LOGOUT_URL = "logoutUrl";
 
@@ -92,52 +95,53 @@ public class SsoConfigProperties {
             return ssoProperties;
         }
 
-            SAXReader saxReader = new SAXReader();
-            Document doc = saxReader.read(SsoConfigProperties.class.getClassLoader().getResourceAsStream(fileName));
-            //获取根元素
-            Element root = doc.getRootElement();
-            SsoConfigProperties sp = new SsoConfigProperties();
-            // 获取客户端类型
-            sp.clientType = root.element(CLIENT_TYPE).getTextTrim();
-            // 获取不需要验证的路径
-            String ignoreUrls = root.element(IGNORE_URLS).getTextTrim();
-            if (StringUtils.isNotEmpty(ignoreUrls)) {
-                sp.ignoreUrls = ignoreUrls.split(SEPARATOR);
-            }
-            // 获取不需要验证的静态资源
-            String ignoreResources = root.element(IGNORE_RESOURCES).getTextTrim();
-            if (StringUtils.isNotEmpty(ignoreResources)) {
-                sp.ignoreResources = ignoreResources.split(SEPARATOR);
-            }
-            // 获取SSO Server服务地址
-            sp.ssoServer = root.element(SSO_SERVER).getTextTrim();
-            // 获取退出接口
-            sp.logoutUrl = root.element(LOGOUT_URL).getTextTrim();
-            // 获取登录地址
-            sp.loginUrl = root.element(LOGIN_URL).getTextTrim();
-            Element ajaxFailureResponse = root.element(AJAX_FAILURE_RESPONSE);
-            if (!ObjectUtils.isEmpty(ajaxFailureResponse)) {
-                AjaxFailureResponse failureResponse = new AjaxFailureResponse();
-                failureResponse.setContentType(ajaxFailureResponse.element(CONTENT_TYPE).getTextTrim());
-                failureResponse.setCode(Integer.valueOf(ajaxFailureResponse.element(CODE).getTextTrim()));
-                failureResponse.setMsg(ajaxFailureResponse.element(MSG).getTextTrim());
-                sp.ajaxFailureResponse = failureResponse;
-            }
+        SAXReader saxReader = new SAXReader();
+        Document doc = saxReader.read(SsoConfigProperties.class.getClassLoader().getResourceAsStream(fileName));
+        //获取根元素
+        Element root = doc.getRootElement();
+        SsoConfigProperties sp = new SsoConfigProperties();
+        // 获取客户端类型
+        sp.clientType = root.element(CLIENT_TYPE).getTextTrim();
+        // 获取不需要验证的路径
+        String ignoreUrls = root.element(IGNORE_URLS).getTextTrim();
+        if (StringUtils.isNotEmpty(ignoreUrls)) {
+            sp.ignoreUrls = ignoreUrls.split(SEPARATOR);
+        }
+        // 获取不需要验证的静态资源
+        String ignoreResources = root.element(IGNORE_RESOURCES).getTextTrim();
+        if (StringUtils.isNotEmpty(ignoreResources)) {
+            sp.ignoreResources = ignoreResources.split(SEPARATOR);
+        }
+        // 获取SSO Server服务地址
+        sp.ssoServer = root.element(SSO_SERVER).getTextTrim();
+        sp.ssoCallbackUrl = root.element(SSO_CALLBACK_URL).getTextTrim();
+        // 获取退出接口
+        sp.logoutUrl = root.element(LOGOUT_URL).getTextTrim();
+        // 获取登录地址
+        sp.loginUrl = root.element(LOGIN_URL).getTextTrim();
+        Element ajaxFailureResponse = root.element(AJAX_FAILURE_RESPONSE);
+        if (!ObjectUtils.isEmpty(ajaxFailureResponse)) {
+            AjaxFailureResponse failureResponse = new AjaxFailureResponse();
+            failureResponse.setContentType(ajaxFailureResponse.element(CONTENT_TYPE).getTextTrim());
+            failureResponse.setCode(Integer.valueOf(ajaxFailureResponse.element(CODE).getTextTrim()));
+            failureResponse.setMsg(ajaxFailureResponse.element(MSG).getTextTrim());
+            sp.ajaxFailureResponse = failureResponse;
+        }
 
-            Element jedisConfig = root.element(JEDIS_CONFIG);
-            if (!ObjectUtils.isEmpty(jedisConfig)) {
-                JedisConfig config = new JedisConfig();
-                config.setAddress(jedisConfig.element(ADDRESS).getTextTrim());
-                if (!ObjectUtils.isEmpty(jedisConfig.element(PASSWORD))) {
-                    config.setPassword(jedisConfig.element(PASSWORD).getTextTrim());
-                }
-                config.setMaxTotal(Integer.valueOf(jedisConfig.element(MAT_TOTAL).getTextTrim()));
-                config.setMaxIdle(Integer.valueOf(jedisConfig.element(MAX_IDLE).getTextTrim()));
-                config.setMinIdle(Integer.valueOf(jedisConfig.element(MIN_IDLE).getTextTrim()));
-                config.setMaxWaitMillis(Integer.valueOf(jedisConfig.element(MAX_WAIT_MILLIS).getTextTrim()));
-                sp.jedisConfig = config;
+        Element jedisConfig = root.element(JEDIS_CONFIG);
+        if (!ObjectUtils.isEmpty(jedisConfig)) {
+            JedisConfig config = new JedisConfig();
+            config.setAddress(jedisConfig.element(ADDRESS).getTextTrim());
+            if (!ObjectUtils.isEmpty(jedisConfig.element(PASSWORD))) {
+                config.setPassword(jedisConfig.element(PASSWORD).getTextTrim());
             }
-            ssoProperties = sp;
+            config.setMaxTotal(Integer.parseInt(jedisConfig.element(MAT_TOTAL).getTextTrim()));
+            config.setMaxIdle(Integer.parseInt(jedisConfig.element(MAX_IDLE).getTextTrim()));
+            config.setMinIdle(Integer.parseInt(jedisConfig.element(MIN_IDLE).getTextTrim()));
+            config.setMaxWaitMillis(Integer.parseInt(jedisConfig.element(MAX_WAIT_MILLIS).getTextTrim()));
+            sp.jedisConfig = config;
+        }
+        ssoProperties = sp;
         return ssoProperties;
     }
 

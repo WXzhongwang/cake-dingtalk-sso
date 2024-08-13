@@ -27,6 +27,7 @@ easy:
       client-type: web
       sso-server: http://test.sso.rany.com/
       login-url: http://test.sso.rany.com/sso/loginPage
+      sso-callback-url: http://test.sso.rany.com/sso/code
       logout-url: /sso/logout
       ignore-urls: /,/ok,/sso/loginPage,/sso/login,/sso/code,/swagger-resources/**,/v2/api-docs
       ignore-resources: .js, .css, .jpg, .png, .ico, .html

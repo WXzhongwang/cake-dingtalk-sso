@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE cakesso [
-        <!ELEMENT cakesso (clientType+,ignoreUrls?,ignoreResources?,ssoServer+,logoutUrl+,loginUrl+,ajaxFailureResponse?, jedisConfig?)>
+        <!ELEMENT cakesso (clientType+,ignoreUrls?,ignoreResources?,ssoServer+,ssoCallbackaUrl+,logoutUrl+,loginUrl+,ajaxFailureResponse?, jedisConfig?)>
         <!ELEMENT clientType      (#PCDATA)>
         <!ELEMENT ignoreUrls    (#PCDATA)>
         <!ELEMENT ignoreResources (#PCDATA)>
         <!ELEMENT ssoServer    (#PCDATA)>
+        <!ELEMENT ssoCallbackaUrl    (#PCDATA)>
         <!ELEMENT logoutUrl    (#PCDATA)>
         <!ELEMENT loginUrl    (#PCDATA)>
         <!ELEMENT ajaxFailureResponse (contentType?,code?,msg?)>
@@ -38,11 +39,12 @@
         .html
     </ignoreResources>
     <!-- SSO Server地址 -->
-    <ssoServer>http://127.0.0.1:8888/</ssoServer>
+    <ssoServer>http://127.0.0.1:8765/</ssoServer>
+    <ssoCallbackaUrl>http://127.0.0.1:8765/sso/code</ssoCallbackaUrl>
     <!-- 注销接口地址 -->
     <logoutUrl>/sso/logout</logoutUrl>
     <!-- 登录地址完整路径 -->
-    <loginUrl>http://127.0.0.1:8888/sso/loginPage</loginUrl>
+    <loginUrl>http://127.0.0.1:8765/sso/loginPage</loginUrl>
     <!-- ajax请求认证失败响应配置 -->
     <ajaxFailureResponse>
         <contentType>application/json</contentType>

@@ -24,13 +24,15 @@ public class SsoProperties {
 
     @StrValueRange(values = {SsoConstants.WEB_CLIENT, SsoConstants.APP_CLIENT}, message = "clientType只能为web或app")
     private String clientType = SsoConstants.WEB_CLIENT;
-    
+
     private String[] ignoreUrls = {};
 
     private String[] ignoreResources = {".js", ".css", ".jpg", ".png", ".ico", ".html"};
 
     @NotEmpty
     private String ssoServer;
+    @NotEmpty
+    private String ssoCallbackUrl;
 
     @StrValueRange(values = {SsoConstants.WEB_CLIENT_LOGOUT_URL, SsoConstants.APP_CLIENT_LOGOUT_URL})
     private String logoutUrl = SsoConstants.WEB_CLIENT_LOGOUT_URL;

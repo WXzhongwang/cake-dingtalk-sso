@@ -74,6 +74,7 @@ public class WebController {
     private String loginPage(String webapp, ModelMap model) {
         model.put("webapp", webapp);
         model.put("appId", "dingdmo8khbuyyvgvcmi");
+        model.put("redirectUri", ssoProperties.getSsoCallbackUrl());
         return "login";
     }
 
