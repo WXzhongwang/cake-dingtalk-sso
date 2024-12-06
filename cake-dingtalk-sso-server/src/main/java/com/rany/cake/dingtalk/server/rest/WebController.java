@@ -1,7 +1,6 @@
 package com.rany.cake.dingtalk.server.rest;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.cake.dingtalk.sdk.beans.SsoUser;
 import com.rany.cake.dingtalk.sdk.configuration.SsoConstants;
 import com.rany.cake.dingtalk.sdk.properties.SsoConfigProperties;
@@ -102,12 +101,9 @@ public class WebController {
 
             AccountDTO content = null;
             try {
-                PojoResult<AccountDTO> accountResult = accountFacade.getAccountByDingId(accountBasicQuery);
-                content = accountResult.getContent();
+                content = accountFacade.getAccountByDingId(accountBasicQuery);
             } catch (Exception ex) {
                 log.error("获取用户信息失败", ex);
-//                model.put("msg", SsoConstants.AUTH_FAILED_WARN);
-//                return "login";
 
                 // 尝试注册用户
                 try {
@@ -117,8 +113,8 @@ public class WebController {
                     createAccountCommand.setOpenId(openid);
                     createAccountCommand.setDingUnionId(unionId);
                     createAccountCommand.setAccountType(AccountTypeEnum.BASIC.name());
-                    PojoResult<Long> account = accountFacade.createAccount(createAccountCommand);
-                    if (account == null || !account.getSuccess()) {
+                    Long newAccount = accountFacade.createAccount(createAccountCommand);
+                    if (newAccount == null) {
                         model.put("msg", SsoConstants.ACCOUNT_REGISTER_FAILED);
                         return "login";
                     }
@@ -131,8 +127,7 @@ public class WebController {
 
             // 注册完再次查询
             accountBasicQuery.setDingUnionId(unionId);
-            PojoResult<AccountDTO> newAccountResult = accountFacade.getAccountByDingId(accountBasicQuery);
-            content = newAccountResult.getContent();
+            content = accountFacade.getAccountByDingId(accountBasicQuery);
 
             SsoUser ssoUser = SsoUser.builder()
                     .userId(String.valueOf(content.getId()))
