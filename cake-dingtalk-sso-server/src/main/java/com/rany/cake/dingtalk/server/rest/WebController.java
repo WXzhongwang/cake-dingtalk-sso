@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -82,9 +81,7 @@ public class WebController {
     private String code(@RequestParam(value = "code", required = true) String code,
                         @RequestParam(value = "state") String webapp,
                         HttpServletRequest request, HttpServletResponse response
-            , ModelMap model) throws IOException {
-        //String accessToken = dingAgentService.getAccessToken(code);
-        //GetUserResponseBody userinfo = dingAgentService.getUserinfo(accessToken);
+            , ModelMap model) {
 
         JSONObject userInfoByAuthCode = dingAgentService.getUserInfoByAuthCode(code);
 
