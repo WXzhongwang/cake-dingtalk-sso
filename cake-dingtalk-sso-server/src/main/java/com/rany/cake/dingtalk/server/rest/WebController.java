@@ -127,7 +127,7 @@ public class WebController {
             content = accountFacade.getAccountByDingId(accountBasicQuery);
 
             SsoUser ssoUser = SsoUser.builder()
-                    .userId(String.valueOf(content.getId()))
+                    .userId(content.getId())
                     .userName(content.getAccountName())
                     .build();
 
