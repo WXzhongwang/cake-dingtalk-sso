@@ -36,11 +36,12 @@ spring:
 
 
 dingtalk:
-  agentId: 1264202242
-  appKey: dingdmo8khbuyyvgvcmi
-  appSecret: Gi1Aa8FKdUo28P1NNa5weWZKN3v8i_q9AcXCZ6oAnDOA-CElLhZJZNzR0Ig1OQnk
-  corpId: ding3f7cf4e7c622e7eb4ac5d6980864d335
+  agentId: ###
+  appKey: ###
+  appSecret: ###
+  corpId: ###
 
 cake:
   uic:
+    # #需要替换为cake-ops内的某一个租户
     tenantId: 768460649511661568
