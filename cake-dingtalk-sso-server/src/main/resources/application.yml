@@ -32,6 +32,20 @@ spring:
     suffix: .html
     cache: false
 
+easy:
+  sso:
+    server:
+      maxAge: 7200
+    client:
+      enable: true
+      client-type: web
+      logout-url: /sso/logout
+      ignore-urls: /,/ok,/sso/loginPage,/sso/login,/sso/code,/swagger-resources/**,/v2/api-docs
+      ignore-resources: .js, .css, .jpg, .png, .ico, .html
+      ajax-failure-response:
+        code: 401
+        msg: 用户未登录
+        content-type: application/json
 
 
 

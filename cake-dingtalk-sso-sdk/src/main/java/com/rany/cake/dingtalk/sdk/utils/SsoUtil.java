@@ -114,7 +114,7 @@ public class SsoUtil {
 
         SsoUser ssoUser = JSON.parseObject(cookieVal, SsoUser.class);
 
-        if (!isLogined && !ObjectUtils.isEmpty(ssoUser)) {
+        if (!ObjectUtils.isEmpty(ssoUser)) {
             // 标记为已登录
             isLogined = true;
             // 将用户信息存储到session
