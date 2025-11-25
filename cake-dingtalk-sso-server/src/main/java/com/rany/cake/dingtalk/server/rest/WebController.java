@@ -10,8 +10,11 @@ import com.rany.cake.dingtalk.server.service.DingAgentService;
 import com.rany.cake.dingtalk.starter.SsoProperties;
 import com.rany.ops.api.command.account.CreateAccountCommand;
 import com.rany.ops.api.facade.account.AccountFacade;
+import com.rany.ops.api.query.account.AccountBasicQuery;
 import com.rany.ops.api.query.account.AccountDingIdQuery;
+import com.rany.ops.api.query.account.AccountLoginNameQuery;
 import com.rany.ops.common.dto.account.AccountDTO;
+import com.rany.ops.common.dto.account.SafeStrategyDTO;
 import com.rany.ops.common.enums.AccountTypeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -75,6 +78,21 @@ public class WebController {
         model.put("redirectUri", ssoProperties.getSsoCallbackUrl());
         return "login";
     }
+
+    /**
+     * web客户端登录页
+     *
+     * @param webapp
+     * @param model
+     * @return
+     */
+    @ApiOperation("跳转登录页")
+    @GetMapping("/sso/loginPageV2")
+    private String loginPageV2(String webapp, ModelMap model) {
+        model.put("webapp", webapp);
+        return "login-v2";
+    }
+
 
     @ApiOperation("code")
     @RequestMapping(value = "/sso/code", method = RequestMethod.GET)
@@ -183,43 +201,93 @@ public class WebController {
                         HttpServletResponse response,
                         ModelMap model) {
 
-//        User user = userService.getByUserNameAndPassword(username, password);
-//
-//        if (!ObjectUtils.isEmpty(user)) {
-//            SsoConfigProperties properties = new SsoConfigProperties();
-//            BeanUtils.copyProperties(ssoProperties, properties);
+        AccountDTO content = null;
+        try {
+            AccountLoginNameQuery accountLoginNameQuery = new AccountLoginNameQuery();
+            accountLoginNameQuery.setLoginName(username);
+            accountLoginNameQuery.setTenantId(tenantId);
+            SafeStrategyDTO safeStrategyDTO = accountFacade.getAccountByLoginInName(accountLoginNameQuery);
+            // 判断密码是否正确
+            if (!password.equals(safeStrategyDTO.getAuthValue())) {
+                model.put("msg", SsoConstants.AUTH_FAILED_WARN);
+                return "login-v2";
+            }
+            // 判断是否到达冻结时间
+            if (safeStrategyDTO.getBlockAt() != null && safeStrategyDTO.getBlockAt().getTime() > System.currentTimeMillis()) {
+                model.put("msg", SsoConstants.AUTH_BLOCKED_WARN);
+                return "login-v2";
+            }
+            // 判断是否到达过期时间
+            if (safeStrategyDTO.getExpiredAt() != null && safeStrategyDTO.getExpiredAt().getTime() < System.currentTimeMillis()) {
+                model.put("msg", SsoConstants.AUTH_EXPIRED_WARN);
+                return "login-v2";
+            }
+            AccountBasicQuery accountBasicQuery = new AccountBasicQuery();
+            accountBasicQuery.setAccountId(safeStrategyDTO.getAccountId());
+//            accountBasicQuery.setTenantId(tenantId);
+            content = accountFacade.getAccount(accountBasicQuery);
+        } catch (Exception ex) {
+            log.error("获取用户信息失败", ex);
+            model.put("msg", SsoConstants.AUTH_FAILED_WARN);
+            return "login-v2";
+        }
+
+        SsoUser ssoUser = SsoUser.builder()
+                .userId(content.getId())
+                .userName(content.getAccountName())
+                .build();
+
+        if (!ObjectUtils.isEmpty(ssoUser)) {
+            SsoConfigProperties properties = new SsoConfigProperties();
+            BeanUtils.copyProperties(ssoProperties, properties);
 //            SsoUser ssoUser = SsoUser.builder()
 //                    .userId(String.valueOf(user.getId()))
 //                    .userName(user.getUserName())
 //                    .build();
-//
-//            // 将用户信息保存到Cookie
-//            SsoUtil.saveCookie(request, response, SsoConstants.SSO_SESSION_ID,
-//                    JSONObject.toJSONString(ssoUser), serverProperties.getMaxAge());
-//
-//            // 设置session过期时间和Cookie过期时间同步
-//            HttpSession session = request.getSession();
-//            session.setMaxInactiveInterval(serverProperties.getMaxAge());
-//
-//            //重定向到原先访问的页面
-//            if (StringUtils.isEmpty(webapp)) {
-//                return "redirect:/admin";
-//            } else {
-//                String url = StringUtils.EMPTY;
-//                try {
-//                    url = "redirect:" + URLDecoder.decode(webapp, "UTF-8");
-//                } catch (UnsupportedEncodingException e) {
-//                    log.error(e.getMessage(), e);
-//                }
-//                return url;
-//            }
-//        } else {
-//            model.put("msg", SsoConstants.AUTH_FAILED_WARN);
-//            return "login";
-//        }
-        return null;
+
+            // 将用户信息保存到Cookie
+            SsoUtil.saveCookie(request, response, SsoConstants.SSO_SESSION_ID,
+                    JSONObject.toJSONString(ssoUser), serverProperties.getMaxAge());
+
+            // 设置session过期时间和Cookie过期时间同步
+            HttpSession session = request.getSession();
+            session.setMaxInactiveInterval(serverProperties.getMaxAge());
+
+            //重定向到原先访问的页面
+            if (StringUtils.isEmpty(webapp)) {
+                return "redirect:/admin";
+            } else {
+                String url = StringUtils.EMPTY;
+                try {
+                    url = "redirect:" + URLDecoder.decode(webapp, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    log.error(e.getMessage(), e);
+                }
+                return url;
+            }
+        } else {
+            model.put("msg", SsoConstants.AUTH_FAILED_WARN);
+            return "login-v2";
+        }
     }
 
+    /**
+     * 描述: web客户端退出登录
+     *
+     * @param request
+     * @param response
+     * @return {@link String}
+     * @author maming
+     * @date 2021/11/12
+     */
+    @ApiOperation("用户注销")
+    @RequestMapping(value = "/sso/logoutV2", method = RequestMethod.GET)
+    public String logoutV2(HttpServletRequest request,
+                         HttpServletResponse response) {
+        SsoUtil.invalidateSession(request);
+        SsoUtil.removeCookie(request, response, SsoConstants.SSO_SESSION_ID);
+        return "redirect:/login-v2";
+    }
 
     /**
      * 描述: web客户端退出登录

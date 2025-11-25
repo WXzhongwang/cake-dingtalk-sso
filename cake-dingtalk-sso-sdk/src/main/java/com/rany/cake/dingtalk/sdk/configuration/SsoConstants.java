@@ -34,6 +34,8 @@ public final class SsoConstants {
      * 未知的用户信息
      */
     public static final String AUTH_FAILED_WARN = "未知的用户信息";
+    public static final String AUTH_BLOCKED_WARN = "用户信息已冻结";
+    public static final String AUTH_EXPIRED_WARN = "用户信息已过期";
     public static final String ACCOUNT_REGISTER_FAILED = "企业应用新用户注册失败";
 
     /**
